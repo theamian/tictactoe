@@ -14,7 +14,6 @@ $(function() {
     const p1 = Player();
     const p2 = Player();
 
-
     const board = (function() {
         //array represents the tic tac toe board per instructions
         let arr = [0,1,2,3,4,5,6,7,8];
@@ -26,8 +25,10 @@ $(function() {
         const giveLineStr = (index, step) => {
             return [arr[index], arr[index + step], arr[index + step*2]].join("");
         };
+
+        const giveBoard = () => arr;
     
-        return {mark, giveLineStr}
+        return {mark, giveLineStr, giveBoard}
     })();
     
     const game = (function() {
@@ -44,6 +45,7 @@ $(function() {
         // check for victory conditions
         const _chkwin = () => {
             let str = active.saySymbol().repeat(3); //helper string (either XXX or OOO) to compare against the board
+
             for(let i=0; i<3;i++) {
                 if(str === board.giveLineStr(i,3)) return true; //checks for three in a column
             }
@@ -59,27 +61,59 @@ $(function() {
         const _victory = () => {
             $("#nameBoard").toggleClass("hidden");
             $(".gridCont").toggleClass("hidden");
-            $("#message").text(`${active.sayName()} is the winner!!!`).toggleClass("hidden");
+            $("#message").text(`${active.sayName()} wins`).toggleClass("hidden");
         }
+
+        //check for a tie
+        const _chktie = () => {
+            let brd = board.giveBoard();
+            for(let i=0; i<brd.length; i++){
+                if(brd[i] !== "X" && brd[i] !== "O") {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        //if tie
+        const _draw = () => {
+            $("#nameBoard").toggleClass("hidden");
+            $(".gridCont").toggleClass("hidden");
+            $("#message").text("it's a draw :/").toggleClass("hidden");
+        };
 
         // what happens after a click on a field
         const turn = (field) => {
             board.mark(field, active.saySymbol());
             $(`#${field}`).off("click");
-            if(_chkwin()) _victory();
+            $(`#${field}`).append($("<div></div>").text(active.saySymbol()).addClass("symbol"));
+            if(_chkwin()) setTimeout(_victory, 1000);
+            else if(_chktie()) _draw();
             else _toggle();
         }
         return {turn}
     })();
     
-    function clean() {
+    // empties input boxes
+    const clean = () => {
         $("#player1").val("");
         $("#player2").val("");
     }
 
-    function kickoff() { // <-- WHEN THE GAME STARTS
-        if($("#player1").val() === "") $("#player1").val("Player1");
-        if($("#player2").val() === "") $("#player2").val("Player2");
+    // draws the grid
+    const lines = () => {
+        $("div").filter(function() {
+            return this.id.match(/^[012345]$/);
+        }).addClass("bottomBorder");
+        $("div").filter(function() {
+            return this.id.match(/^[013467]$/);
+        }).addClass("rightBorder");
+    }
+
+    const kickoff = () => {
+        lines();
+        if($("#player1").val() === "") $("#player1").val("player1");
+        if($("#player2").val() === "") $("#player2").val("player2");
         $(".gridCont").removeClass("hidden");
         $("#p1").text($("#player1").val());
         $("#p2").text($("#player2").val());
@@ -95,12 +129,12 @@ $(function() {
         $("#p2").addClass("inactive");
     }
 
-    // BEGGINING OF THE "REAL" SHIT:
+    // begin:
 
     clean();
     $("#submitBtn").click(kickoff);
     $(".gridCont > div").click(function() {
-        game.turn($(this).attr("id"));
+        game.turn(this.id);
     }); // end grid click
 
 

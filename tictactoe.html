@@ -1,32 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
     <head>
+        <title>tictactoe</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="ttt.css">
+        <meta name="description" content="a simple tic tac toe game">
+        <meta property="og:title" content="tic tac toe">
+        <meta property="og:description" content="play a simple tic tac toe game">
+        <link rel="stylesheet" href="static/ttt.css">
+        <link rel="shortcut icon" href="static/favicon-16x16.png">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <!-- <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script> -->
-        <script src="ttt.js"></script>
+        <script src="static/ttt.js"></script>
     </head>
     <body>
+        <header>
+            tic tac toe
+            <hr>
+        </header>
         <form id="nameForm">
-            <input id="player1" type="text" placeholder="Player1 Name" required>
-            <input id="player2" type="text" placeholder="Player2 Name" required>
-            <input id="submitBtn" type="button" value="Start!">
+            <input id="player1" type="text" placeholder="player1">
+            <input id="player2" type="text" placeholder="player2"><br>
+            <input id="submitBtn" type="button" value="start">
         </form>
         <div id="nameBoard" class="hidden">
             <div id="p1"></div>
             <div id="p2"></div>
         </div>
         <div class="gridCont hidden">
-            <div id="0" class="gridItem">0</div>
-            <div id="1" class="gridItem">1</div>
-            <div id="2" class="gridItem">2</div>
-            <div id="3" class="gridItem">3</div>
-            <div id="4" class="gridItem">4</div>
-            <div id="5" class="gridItem">5</div>
-            <div id="6" class="gridItem">6</div>
-            <div id="7" class="gridItem">7</div>
-            <div id="8" class="gridItem">8</div>
+            <div id="0" class="gridItem"></div>
+            <div id="1" class="gridItem"></div>
+            <div id="2" class="gridItem"></div>
+            <div id="3" class="gridItem"></div>
+            <div id="4" class="gridItem"></div>
+            <div id="5" class="gridItem"></div>
+            <div id="6" class="gridItem"></div>
+            <div id="7" class="gridItem"></div>
+            <div id="8" class="gridItem"></div>
         </div>
         <div id="message" class="hidden"></div>
     </body>
